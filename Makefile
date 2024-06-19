@@ -151,7 +151,8 @@ CONFIG_SECURITY_MEM_SIZE = 3686400
 # and causing that it's illegal to use those channels.
 CONFIG_DISABLE_SCAN_BAND4 = n
 ###################### Platform Related #######################
-CONFIG_PLATFORM_I386_PC = y
+CONFIG_PLATFORM_ARM_IMX6QD = y
+CONFIG_PLATFORM_I386_PC = n
 CONFIG_PLATFORM_IMX8 = n
 CONFIG_PLATFORM_IMX8_ANDROID_11 = n
 CONFIG_PLATFORM_IMX8_ANDROID_12 = n
@@ -1006,7 +1007,7 @@ ifeq ($(CONFIG_USB_HCI), y)
 ifeq ($(CONFIG_BT_COEXIST), n)
 MODULE_NAME = 8812cu
 else
-MODULE_NAME = 88x2cu
+MODULE_NAME = 8822cu
 endif
 endif
 ifeq ($(CONFIG_PCI_HCI), y)
@@ -1374,6 +1375,16 @@ endif
 
 ifeq ($(CONFIG_DISABLE_SCAN_BAND4), y)
 EXTRA_CFLAGS += -DCONFIG_DISABLE_SCAN_BAND4
+endif
+
+ifeq ($(CONFIG_PLATFORM_ARM_IMX6QD), y)
+EXTRA_CFLAGS += -DCONFIG_LITTLE_ENDIAN  -DDBG_SITESURVEY
+EXTRA_CFLAGS += -DCONFIG_IOCTL_CFG80211 -DRTW_USE_CFG80211_STA_EVENT
+ARCH := arm
+CROSS_COMPILE := /opt/poky/4.2_6.1.22_imx6/sysroots/x86_64-pokysdk-linux/usr/bin/arm-poky-linux-gnueabi/arm-poky-linux-gnueabi-
+KSRC := /home/adv/project/nxp/y42_6122/adv/linux-imx
+MODDESTDIR := /home/adv/project/nxp/y42_6122/adv/rootfs/lib/modules/6.1.22-00004-gf2e04578f449/kernel/drivers/net/wireless/
+INSTALL_PREFIX :=
 endif
 
 ifeq ($(CONFIG_PLATFORM_I386_PC), y)
